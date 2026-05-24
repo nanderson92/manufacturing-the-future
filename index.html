@@ -16,7 +16,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://nanderson92.github.io/manufacturing-the-future/" />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1f2a'/%3E%3Cpath d='M14 40V16h18v6H21v5h10v6H21v7h-7Zm25 8V22H28v-6h28v6H46v26h-7Z' fill='%2372fff2'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -25,12 +25,16 @@
     <header class="site-header">
       <div class="header-inner">
         <div class="brand-lockup" aria-label="Manufacturing the Future — Sci-Fi Technology Reality Atlas">
-          <span class="brand-mark" aria-hidden="true">F→R</span>
+          <span class="brand-mark" aria-hidden="true">MTF</span>
           <div>
-            <p class="eyebrow">Manufacturing the Future</p>
-            <h1>Fiction-to-Reality Atlas</h1>
+            <p class="eyebrow">Fiction-to-Reality Atlas</p>
+            <h1>Manufacturing the Future</h1>
           </div>
         </div>
+        <label class="nav-search-wrap" aria-label="Search atlas from header">
+          <span class="sr-only">Search atlas</span>
+          <input id="navSearchInput" type="search" placeholder="Search atlas..." autocomplete="off" />
+        </label>
         <nav class="view-tabs" aria-label="Atlas views">
           <button class="tab is-active" type="button" data-view="universes" aria-pressed="true">Universe Rankings</button>
           <button class="tab" type="button" data-view="technologies" aria-pressed="false">Reality Map</button>
@@ -47,8 +51,8 @@
             <p class="eyebrow">Reality scoring for fictional futures</p>
             <h2 id="page-title">Fiction is full of finished technologies. Reality is full of unfinished manufacturing problems.</h2>
             <p>
-              This standalone atlas maps sci-fi technologies to real R&amp;D analogues, present-day capability scores, and the materials,
-              energy, reliability, process, and scale bottlenecks that still separate imagination from deployable hardware.
+              A standalone reality atlas mapping sci-fi systems to real R&amp;D analogues, present-day capability scores, and the materials,
+              energy, reliability, process, qualification, and scale bottlenecks between imagination and deployable hardware.
             </p>
             <div class="hero-actions" aria-label="Atlas controls">
               <label class="search-wrap">
@@ -59,7 +63,7 @@
                 <span>Domain</span>
                 <select id="categoryFilter"></select>
               </label>
-              <label class="mode-toggle">
+              <label class="mode-toggle" title="Expert mode reveals technical notes, score breakdowns, and source IDs in the database views.">
                 <input id="smeToggle" type="checkbox" />
                 <span>Expert mode</span>
               </label>
@@ -147,7 +151,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>Curated snapshot: <span id="updatedAt">2026-05-24</span>. Reality Scores are interpretive, evidence-linked estimates.</p>
+      <p>By Nathan Anderson. Last reviewed: <span id="updatedAt">2026-05-24</span>. Reality Scores are interpretive, evidence-linked estimates.</p>
     </footer>
 
     <script src="./data.js"></script>

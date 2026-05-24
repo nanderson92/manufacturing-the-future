@@ -48,9 +48,44 @@
     return value.length === 10 ? value : value;
   }
 
+  function searchText(value) {
+    if (value === null || value === undefined) return "";
+    if (Array.isArray(value)) return value.map(searchText).join(" " );
+    if (typeof value === "object") return Object.values(value).map(searchText).join(" " );
+    return String(value);
+  }
+
+  function matchesText(value, query = state.query) {
+    if (!query) return true;
+    const normalizedQuery = query.toLowerCase();
+    return searchText(value).toLowerCase().includes(normalizedQuery);
+  }
+
   function includesQuery(item) {
-    if (!state.query) return true;
-    return JSON.stringify(item).toLowerCase().includes(state.query.toLowerCase());
+    return matchesText(item);
+  }
+
+  function universeSearchPayload(universe) {
+    const techs = universe.technologies.map((id) => techById.get(id)).filter(Boolean);
+    const sourceIds = new Set(techs.flatMap((tech) => tech.sources || []));
+    const sources = [...sourceIds].map((id) => sourceById.get(id)).filter(Boolean);
+    return { universe, techs, sources };
+  }
+
+  function techSearchPayload(tech) {
+    const sources = (tech.sources || []).map((id) => sourceById.get(id)).filter(Boolean);
+    const relatedBottlenecks = db.bottlenecks.filter((bottleneck) => bottleneck.unlocks.includes(tech.id));
+    return { tech, sources, relatedBottlenecks };
+  }
+
+  function bottleneckSearchPayload(bottleneck) {
+    const unlockedTechs = (bottleneck.unlocks || []).map((id) => techById.get(id)).filter(Boolean);
+    const sources = (bottleneck.sources || []).map((id) => sourceById.get(id)).filter(Boolean);
+    return { bottleneck, unlockedTechs, sources };
+  }
+
+  function sourceSearchPayload(id, source) {
+    return { id, source, usedBy: technologyUsersForSource(id) };
   }
 
   function inCategoryTech(tech) {
@@ -174,9 +209,9 @@
       const average = items.length ? items.reduce((sum, tech) => sum + tech.completion, 0) / items.length : 0;
       return { category, average };
     });
-    const cx = 150;
-    const cy = 150;
-    const maxR = 112;
+    const cx = 170;
+    const cy = 170;
+    const maxR = 108;
     const points = averaged.map((entry, index) => {
       const angle = -Math.PI / 2 + (index * Math.PI * 2) / averaged.length;
       const r = (entry.average / 100) * maxR;
@@ -185,37 +220,39 @@
         x: cx + Math.cos(angle) * r,
         y: cy + Math.sin(angle) * r,
         ax: cx + Math.cos(angle) * maxR,
-        ay: cy + Math.sin(angle) * maxR
+        ay: cy + Math.sin(angle) * maxR,
+        lx: cx + Math.cos(angle) * (maxR + 26),
+        ly: cy + Math.sin(angle) * (maxR + 26)
       };
     });
     const polygon = points.map((point) => `${point.x},${point.y}`).join(" ");
+    const legend = averaged
+      .map(
+        (point) => `<span class="radar-key"><span style="background:${escapeHtml(db.categoryColors[point.category])}"></span>${escapeHtml(point.category)} · ${score(point.average)}</span>`
+      )
+      .join("");
     $("#heroRadar").innerHTML = `
-      <svg viewBox="0 0 300 300" role="img" aria-label="Average Reality Score radar by technology domain">
-        <defs>
-          <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="4" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-        <circle cx="${cx}" cy="${cy}" r="112" fill="none" stroke="rgba(255,255,255,.18)" />
-        <circle cx="${cx}" cy="${cy}" r="75" fill="none" stroke="rgba(255,255,255,.12)" />
-        <circle cx="${cx}" cy="${cy}" r="38" fill="none" stroke="rgba(255,255,255,.1)" />
+      <div class="radar-header">
+        <p class="eyebrow">Atlas snapshot</p>
+        <h3>${escapeHtml(topUniverse.name)} leads the universe ranking</h3>
+        <p>Top universe score: ${topUniverse.accuracy}. Radar spokes show average Reality Score by technology domain.</p>
+      </div>
+      <svg viewBox="0 0 340 340" role="img" aria-label="Average Reality Score radar by technology domain">
+        <circle cx="${cx}" cy="${cy}" r="108" fill="none" stroke="rgba(16,20,23,.18)" />
+        <circle cx="${cx}" cy="${cy}" r="72" fill="none" stroke="rgba(16,20,23,.12)" />
+        <circle cx="${cx}" cy="${cy}" r="36" fill="none" stroke="rgba(16,20,23,.1)" />
         ${points
           .map(
             (point) => `
-              <line x1="${cx}" y1="${cy}" x2="${point.ax}" y2="${point.ay}" stroke="rgba(255,255,255,.12)" />
-              <circle cx="${point.ax}" cy="${point.ay}" r="3" fill="${escapeHtml(db.categoryColors[point.category])}" />
+              <line x1="${cx}" y1="${cy}" x2="${point.ax}" y2="${point.ay}" stroke="rgba(16,20,23,.13)" />
+              <circle cx="${point.ax}" cy="${point.ay}" r="4" fill="${escapeHtml(db.categoryColors[point.category])}" />
+              <text x="${point.lx}" y="${point.ly}" text-anchor="${point.lx < cx - 8 ? "end" : point.lx > cx + 8 ? "start" : "middle"}" fill="#59636c" font-size="10" font-weight="800">${escapeHtml(point.category.split("/")[0])}</text>
             `
           )
           .join("")}
-        <polygon points="${polygon}" fill="rgba(0,143,136,.28)" stroke="#72fff2" stroke-width="2" filter="url(#softGlow)" />
-        <text x="${cx}" y="136" text-anchor="middle" fill="white" font-size="16" font-weight="800">${escapeHtml(topUniverse.name)}</text>
-        <text x="${cx}" y="158" text-anchor="middle" fill="rgba(255,255,255,.72)" font-size="12">top universe score: ${topUniverse.accuracy}</text>
-        <text x="${cx}" y="178" text-anchor="middle" fill="rgba(255,255,255,.58)" font-size="11">domain averages by Reality Score</text>
+        <polygon points="${polygon}" fill="rgba(0,143,136,.18)" stroke="#008f88" stroke-width="2" />
       </svg>
+      <div class="radar-legend" aria-label="Radar chart domain averages">${legend}</div>
     `;
   }
 
@@ -239,7 +276,7 @@
   function renderUniverses() {
     const universes = [...db.universes]
       .filter(inCategoryUniverse)
-      .filter(includesQuery)
+      .filter((universe) => matchesText(universeSearchPayload(universe)))
       .sort((a, b) => b.accuracy - a.accuracy);
 
     if (!universes.length) return renderEmpty("No universes match this filter.");
@@ -270,7 +307,7 @@
               <strong>${universe.accuracy}</strong>
               <div>
                 <div class="meter" aria-label="Universe realism score ${universe.accuracy}"><span style="--value:${universe.accuracy}%"></span></div>
-                <p class="score-caption">Universe Reality Score</p>
+                <p class="score-caption">Reality Score</p>
               </div>
             </div>
             <p>${escapeHtml(universe.read)}</p>
@@ -336,7 +373,7 @@
         return `
           <g class="tech-point" tabindex="0" role="button" data-tech-id="${escapeHtml(tech.id)}" aria-label="${escapeHtml(tech.name)} Reality Score ${tech.completion}">
             <circle cx="${x}" cy="${y}" r="${size}" fill="${escapeHtml(colorFor(tech))}" stroke="white" stroke-width="${selected ? 3 : 1.5}" />
-            ${selected || tech.completion >= 50 ? `<text x="${x + size + 6}" y="${y + 4}" fill="#15171a" font-size="12" font-weight="800">${escapeHtml(shortLabel(tech.name))}</text>` : ""}
+            ${selected ? `<text x="${x + size + 8}" y="${y + 4}" fill="#15171a" font-size="12" font-weight="900">${escapeHtml(shortLabel(tech.name))}</text>` : ""}
             <title>${escapeHtml(tech.name)}: Reality Score ${tech.completion}</title>
           </g>
         `;
@@ -369,7 +406,7 @@
   function renderTechnologies() {
     const techs = [...db.technologies]
       .filter(inCategoryTech)
-      .filter(includesQuery)
+      .filter((tech) => matchesText(techSearchPayload(tech)))
       .sort((a, b) => b.completion - a.completion);
 
     if (!techs.length) return renderEmpty("No technologies match this filter.");
@@ -395,7 +432,7 @@
                 <span class="completion-donut" style="--percent:${tech.completion};--accent:${escapeHtml(colorFor(tech))}">${tech.completion}</span>
                 <div>
                   <div class="meter"><span style="--value:${tech.completion}%"></span></div>
-                  <p class="score-caption">Reality Score · updated ${escapeHtml(compactDate(tech.updated))}</p>
+                  <p class="score-caption">Reality Score</p>
                 </div>
               </div>
               <dl class="card-dl">
@@ -419,6 +456,7 @@
         <div>
           <div class="map-panel">
             ${renderTechMapSvg(techs)}
+            <p class="chart-note">Select a dot or card to label it. Labels are intentionally reduced to avoid collisions.</p>
             <div class="chip-row" aria-label="Domain legend">
               ${Object.entries(db.categoryColors)
                 .map(([domain, color]) => `<span class="chip"><span style="color:${color}" aria-hidden="true">■</span>${escapeHtml(domain)}</span>`)
@@ -506,22 +544,33 @@
 
     if (!bottlenecks.length) return renderEmpty("No bottlenecks match this filter.");
 
+    const severityValues = bottlenecks.map((bottleneck) => bottleneck.severity);
+    const difficultyValues = bottlenecks.map((bottleneck) => bottleneck.difficulty);
+    const minSeverity = Math.min(...severityValues);
+    const maxSeverity = Math.max(...severityValues);
+    const minDifficulty = Math.min(...difficultyValues);
+    const maxDifficulty = Math.max(...difficultyValues);
+    const scaleToPlot = (value, min, max) => {
+      if (max === min) return 50;
+      return 10 + ((value - min) / (max - min)) * 80;
+    };
     const matrix = bottlenecks
-      .map((bottleneck) => {
-        const label = bottleneck.name
-          .split(" ")
-          .map((part) => part[0])
-          .join("")
-          .slice(0, 3)
-          .toUpperCase();
+      .map((bottleneck, index) => {
+        const displayIndex = index + 1;
         return `
           <button class="matrix-node" type="button" data-bottleneck-id="${escapeHtml(bottleneck.id)}"
-            style="--x:${bottleneck.severity};--y:${bottleneck.difficulty};--size:${Math.max(bottleneck.severity, bottleneck.difficulty)};--accent:${escapeHtml(colorFor(bottleneck))}"
-            title="${escapeHtml(bottleneck.name)}" aria-label="${escapeHtml(bottleneck.name)} severity ${bottleneck.severity}, difficulty ${bottleneck.difficulty}">
-            ${escapeHtml(label)}
+            style="--x:${scaleToPlot(bottleneck.severity, minSeverity, maxSeverity)};--y:${scaleToPlot(bottleneck.difficulty, minDifficulty, maxDifficulty)};--size:${Math.max(bottleneck.severity, bottleneck.difficulty)};--accent:${escapeHtml(colorFor(bottleneck))}"
+            title="${escapeHtml(displayIndex + '. ' + bottleneck.name)}" aria-label="${escapeHtml(bottleneck.name)} severity ${bottleneck.severity}, difficulty ${bottleneck.difficulty}">
+            ${displayIndex}
           </button>
         `;
       })
+      .join("");
+
+    const matrixLegend = bottlenecks
+      .map(
+        (bottleneck, index) => `<button type="button" class="matrix-legend-item" data-bottleneck-id="${escapeHtml(bottleneck.id)}"><strong>${index + 1}</strong><span>${escapeHtml(bottleneck.name)}</span></button>`
+      )
       .join("");
 
     const cards = bottlenecks
@@ -571,6 +620,7 @@
             <div class="axis-label axis-x"><span>lower unlock pressure</span><span>higher unlock pressure</span></div>
             ${matrix}
           </div>
+          <div class="matrix-legend" aria-label="Blocker matrix legend">${matrixLegend}</div>
         </aside>
         <div class="bottleneck-list">${cards}</div>
       </div>
@@ -600,7 +650,7 @@
     const query = state.query.toLowerCase();
     const sources = Object.entries(db.sources)
       .filter(([, source]) => state.sourceKind === "All" || source.kind === state.sourceKind)
-      .filter(([, source]) => !query || JSON.stringify(source).toLowerCase().includes(query))
+      .filter(([id, source]) => !query || matchesText(sourceSearchPayload(id, source)))
       .sort(([, a], [, b]) => (a.kind || a.type).localeCompare(b.kind || b.type) || a.title.localeCompare(b.title));
 
     if (!sources.length) return renderEmpty("No evidence sources match this filter.");
@@ -672,6 +722,7 @@
           window.history.replaceState(null, "", `#${state.view}`);
         }
         render();
+        $("#databaseView")?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     });
     window.addEventListener("hashchange", () => {
@@ -681,9 +732,17 @@
         render();
       }
     });
-    $("#searchInput").addEventListener("input", (event) => {
-      state.query = event.target.value.trim();
-      render();
+    const syncSearchInputs = (value) => {
+      [$("#searchInput"), $("#navSearchInput")].filter(Boolean).forEach((input) => {
+        if (input.value !== value) input.value = value;
+      });
+    };
+    [$("#searchInput"), $("#navSearchInput")].filter(Boolean).forEach((input) => {
+      input.addEventListener("input", (event) => {
+        state.query = event.target.value.trim();
+        syncSearchInputs(event.target.value);
+        render();
+      });
     });
     $("#categoryFilter").addEventListener("change", (event) => {
       state.category = event.target.value;
