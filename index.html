@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sci-Fi Technology Reality Atlas</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand-lockup" aria-label="Sci-Fi Technology Reality Atlas">
+          <span class="brand-mark" aria-hidden="true">SF</span>
+          <div>
+            <p class="eyebrow">Manufacturing the Future</p>
+            <h1>Sci-Fi Technology Reality Atlas</h1>
+          </div>
+        </div>
+        <nav class="view-tabs" aria-label="Database views">
+          <button class="tab is-active" data-view="universes">Universes</button>
+          <button class="tab" data-view="technologies">Tech Map</button>
+          <button class="tab" data-view="bottlenecks">Bottlenecks</button>
+          <button class="tab" data-view="sources">Sources</button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="content">
+      <section class="hero-band" aria-labelledby="page-title">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Reality scoring for fictional futures</p>
+            <h2 id="page-title">How real is sci-fi technology?</h2>
+            <p>
+              Compare major universes, real R&amp;D analogues, estimated completion, and the manufacturing bottlenecks still
+              blocking the road from fiction to hardware.
+            </p>
+            <div class="hero-actions" aria-label="Database controls">
+              <label class="search-wrap">
+                <span class="sr-only">Search database</span>
+                <input id="searchInput" type="search" placeholder="Search atlas..." autocomplete="off" />
+              </label>
+              <label class="select-wrap">
+                <span>Domain</span>
+                <select id="categoryFilter"></select>
+              </label>
+              <label class="mode-toggle">
+                <input id="smeToggle" type="checkbox" />
+                <span>SME detail</span>
+              </label>
+            </div>
+          </div>
+          <div class="atlas-card" aria-label="Database snapshot">
+            <div class="radar-shell" id="heroRadar"></div>
+            <div class="stats-grid" id="statsGrid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="method-band" aria-labelledby="method-title">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">How to read the score</p>
+            <h2 id="method-title">Completion is a present-day capability score, not a prediction.</h2>
+          </div>
+          <p>
+            Scores blend demonstrated physics, engineered prototypes, deployment maturity, manufacturing scalability, and how far the
+            fictional version stretches beyond the closest real system.
+          </p>
+        </div>
+        <div id="methodCards" class="method-grid"></div>
+      </section>
+
+      <section id="databaseView" class="database-band" aria-live="polite"></section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Curated snapshot: <span id="updatedAt"></span>. Percentages are interpretive, evidence-linked estimates.</p>
+    </footer>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
