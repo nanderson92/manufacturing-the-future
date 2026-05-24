@@ -203,56 +203,39 @@
   }
 
   function renderHeroRadar(topUniverse) {
-    const categories = Object.keys(db.categoryColors);
-    const averaged = categories.map((category) => {
-      const items = db.technologies.filter((tech) => tech.domain === category);
-      const average = items.length ? items.reduce((sum, tech) => sum + tech.completion, 0) / items.length : 0;
-      return { category, average };
-    });
-    const cx = 170;
-    const cy = 170;
-    const maxR = 108;
-    const points = averaged.map((entry, index) => {
-      const angle = -Math.PI / 2 + (index * Math.PI * 2) / averaged.length;
-      const r = (entry.average / 100) * maxR;
-      return {
-        ...entry,
-        x: cx + Math.cos(angle) * r,
-        y: cy + Math.sin(angle) * r,
-        ax: cx + Math.cos(angle) * maxR,
-        ay: cy + Math.sin(angle) * maxR,
-        lx: cx + Math.cos(angle) * (maxR + 26),
-        ly: cy + Math.sin(angle) * (maxR + 26)
-      };
-    });
-    const polygon = points.map((point) => `${point.x},${point.y}`).join(" ");
-    const legend = averaged
-      .map(
-        (point) => `<span class="radar-key"><span style="background:${escapeHtml(db.categoryColors[point.category])}"></span>${escapeHtml(point.category)} · ${score(point.average)}</span>`
-      )
-      .join("");
+    const poweredArmor = techById.get("exoskeletonArmor");
+    const lightsaber = techById.get("lightsaber");
+    const replicator = techById.get("replicator");
+    const examples = [poweredArmor, lightsaber, replicator].filter(Boolean);
     $("#heroRadar").innerHTML = `
-      <div class="radar-header">
-        <p class="eyebrow">Atlas snapshot</p>
-        <h3>${escapeHtml(topUniverse.name)} leads the universe ranking</h3>
-        <p>Top universe score: ${topUniverse.accuracy}. Radar spokes show average Reality Score by technology domain.</p>
+      <div class="hero-feature-card">
+        <p class="eyebrow">Start example</p>
+        <h3>Could Iron Man armor exist?</h3>
+        <p>
+          The closest real analogue is not one object; it is exoskeleton robotics, compact actuation, armor materials, sensing, and thermal management trying to close at the same time.
+        </p>
+        <div class="feature-score-row" style="--accent:${escapeHtml(colorFor(poweredArmor || topUniverse))}">
+          <strong>${poweredArmor ? poweredArmor.completion : topUniverse.accuracy}</strong>
+          <div>
+            <span>Reality Score</span>
+            <div class="meter"><span style="--value:${poweredArmor ? poweredArmor.completion : topUniverse.accuracy}%"></span></div>
+          </div>
+        </div>
+        <dl class="feature-dl">
+          <div><dt>Closest analogue</dt><dd>${escapeHtml(poweredArmor?.realEquivalent || "Fielded cousin systems")}</dd></div>
+          <div><dt>What breaks first</dt><dd>Compact energy, heat rejection, actuator reliability, and manufacturable protective structures.</dd></div>
+          <div><dt>Manufacturing question</dt><dd>Can the millionth unit survive real duty cycles, inspection, maintenance, and qualification?</dd></div>
+        </dl>
       </div>
-      <svg viewBox="0 0 340 340" role="img" aria-label="Average Reality Score radar by technology domain">
-        <circle cx="${cx}" cy="${cy}" r="108" fill="none" stroke="rgba(238,232,214,.18)" />
-        <circle cx="${cx}" cy="${cy}" r="72" fill="none" stroke="rgba(238,232,214,.12)" />
-        <circle cx="${cx}" cy="${cy}" r="36" fill="none" stroke="rgba(238,232,214,.10)" />
-        ${points
-          .map(
-            (point) => `
-              <line x1="${cx}" y1="${cy}" x2="${point.ax}" y2="${point.ay}" stroke="rgba(238,232,214,.14)" />
-              <circle cx="${point.ax}" cy="${point.ay}" r="4" fill="${escapeHtml(db.categoryColors[point.category])}" />
-              <text x="${point.lx}" y="${point.ly}" text-anchor="${point.lx < cx - 8 ? "end" : point.lx > cx + 8 ? "start" : "middle"}" fill="rgba(238,232,214,.72)" font-size="10" font-weight="800">${escapeHtml(point.category.split("/")[0])}</text>
-            `
-          )
-          .join("")}
-        <polygon points="${polygon}" fill="rgba(80,227,211,.18)" stroke="#50e3d3" stroke-width="2" />
-      </svg>
-      <div class="radar-legend" aria-label="Radar chart domain averages">${legend}</div>
+      <div class="hero-mini-examples" aria-label="Example Reality Score entries">
+        ${examples.map((tech) => `
+          <article style="--accent:${escapeHtml(colorFor(tech))}">
+            <span>${escapeHtml(tech.domain)}</span>
+            <strong>${escapeHtml(tech.name)}</strong>
+            <p>${tech.completion}/100 · ${escapeHtml(tech.confidence)} confidence</p>
+          </article>
+        `).join("")}
+      </div>
     `;
   }
 
@@ -270,7 +253,7 @@
   }
 
   function resultCount(count, label) {
-    return `<div class="result-count" aria-live="polite"><strong>${count}</strong> ${escapeHtml(label)} shown</div>`;
+    return `<div id="resultCount" class="result-count" aria-live="polite"><strong>${count}</strong> ${escapeHtml(label)} shown</div>`;
   }
 
   function renderUniverses() {
@@ -338,8 +321,8 @@
 
     $("#databaseView").innerHTML = `
       ${renderViewHeader(
-        "Universe Reality Rankings",
-        "Major sci-fi settings ranked by how close their signature technology stacks are to present-day engineering reality — not by storytelling quality or canon preference.",
+        "Which fictional futures are closest?",
+        "A ranking of fictional settings by engineering closure: demonstrated physics, fielded cousins, manufacturability, and the amount of cinematic stretch still required.",
         resultCount(universes.length, "universes")
       )}
       <div class="layout-grid">
@@ -354,8 +337,12 @@
   }
 
   function shortLabel(name) {
-    const words = name.split(" ").filter(Boolean);
-    if (words.length <= 2) return name;
+    if (name.startsWith("Ion /")) return "Ion propulsion";
+    if (name.startsWith("Warp /")) return "Warp drive";
+    if (name.startsWith("Plasma blades")) return "Lightsabers";
+    const cleaned = name.replace(/\s*\/\s*/g, " ");
+    const words = cleaned.split(" ").filter(Boolean);
+    if (words.length <= 2) return cleaned;
     return words.slice(0, 2).join(" ");
   }
 
@@ -394,10 +381,12 @@
             <text x="${x}" y="${height - 24}" text-anchor="middle" font-size="11" fill="rgba(238,232,214,.66)">${tick}</text>
           `;
         }).join("")}
-        <text x="${width / 2}" y="${height - 6}" text-anchor="middle" font-size="12" fill="rgba(238,232,214,.66)" font-weight="800">Reality Score: present-day capability vs fiction</text>
-        <text x="16" y="${height / 2}" transform="rotate(-90 16 ${height / 2})" text-anchor="middle" font-size="12" fill="rgba(238,232,214,.66)" font-weight="800">Manufacturing and integration difficulty</text>
-        <text x="${pad}" y="${pad - 18}" font-size="12" fill="rgba(238,232,214,.66)">hard to manufacture</text>
-        <text x="${width - pad}" y="${height - pad + 34}" text-anchor="end" font-size="12" fill="rgba(238,232,214,.66)">closer to real</text>
+        <text x="${width / 2}" y="${height - 6}" text-anchor="middle" font-size="12" fill="rgba(238,232,214,.66)" font-weight="800">How much exists today?</text>
+        <text x="16" y="${height / 2}" transform="rotate(-90 16 ${height / 2})" text-anchor="middle" font-size="12" fill="rgba(238,232,214,.66)" font-weight="800">How hard is it to build/deploy?</text>
+        <text x="${pad}" y="${pad - 18}" font-size="12" fill="rgba(238,232,214,.66)">hard to build/deploy</text>
+        <text x="${width - pad}" y="${height - pad + 34}" text-anchor="end" font-size="12" fill="rgba(238,232,214,.66)">closer to fielded reality</text>
+        <text x="${pad + 18}" y="${height - pad - 18}" font-size="12" fill="rgba(238,232,214,.46)">missing core function</text>
+        <text x="${width - pad - 18}" y="${pad + 20}" text-anchor="end" font-size="12" fill="rgba(238,232,214,.46)">real but hard to scale</text>
         ${nodes}
       </svg>
     `;
@@ -448,15 +437,15 @@
 
     $("#databaseView").innerHTML = `
       ${renderViewHeader(
-        "Technology Reality Map",
-        "Each dot maps a fictional capability to its closest real R&D analogue, then scores the present-day reality match against manufacturing, deployment, and physics constraints.",
+        "Technology map",
+        "Each dot asks the same question: how much of the fictional function exists today, and how hard would it be to build, qualify, and deploy at scale?",
         resultCount(techs.length, "technologies")
       )}
       <div class="tech-layout">
         <div>
           <div class="map-panel">
             ${renderTechMapSvg(techs)}
-            <p class="chart-note">Select a dot or card to label it. Labels are intentionally reduced to avoid collisions.</p>
+            <p class="chart-note">Takeaway: upper-right technologies are closest to real but hardest to scale; lower-left technologies still lack core physics, function, or energy closure. Select a dot or card to inspect the evidence.</p>
             <div class="chip-row" aria-label="Domain legend">
               ${Object.entries(db.categoryColors)
                 .map(([domain, color]) => `<span class="chip"><span style="color:${color}" aria-hidden="true">■</span>${escapeHtml(domain)}</span>`)
@@ -523,7 +512,7 @@
         ${
           unlockedBy.length
             ? `<div class="detail-block">
-                <h4>Related Manufacturing Bottlenecks</h4>
+                <h4>Related What blocks deployment?</h4>
                 <div class="chip-row">${unlockedBy.map((b) => `<span class="chip">${escapeHtml(b.name)}</span>`).join("")}</div>
               </div>`
             : ""
@@ -607,14 +596,14 @@
 
     $("#databaseView").innerHTML = `
       ${renderViewHeader(
-        "Manufacturing Bottlenecks",
-        "The real frontier is not the fictional artifact; it is the bottleneck underneath it: materials lifetime, heat rejection, qualification, autonomy, power density, reliability, and scale.",
+        "What blocks deployment?",
+        "The bottleneck is usually not the first demonstration. It is the millionth reliable unit: heat rejection, power density, materials lifetime, inspection, qualification, autonomy, supply chain, and scale.",
         resultCount(bottlenecks.length, "bottlenecks")
       )}
       <div class="matrix-wrap">
         <aside class="map-panel bottleneck-matrix" aria-label="Bottleneck severity matrix">
           <h3>Blocker Matrix</h3>
-          <p class="subtle">Right means high unlock pressure. Up means high manufacturing or integration difficulty.</p>
+          <p class="subtle">Right means more technologies unlock if the blocker improves. Up means harder manufacturing, qualification, or integration.</p>
           <div class="matrix-stage">
             <div class="axis-label axis-y">harder to manufacture</div>
             <div class="axis-label axis-x"><span>lower unlock pressure</span><span>higher unlock pressure</span></div>
@@ -657,8 +646,8 @@
 
     $("#databaseView").innerHTML = `
       ${renderViewHeader(
-        "Evidence Library",
-        "A source library for the atlas, labeled by evidence type so readers can distinguish official programs, peer-reviewed literature, industry reports, patents, and speculative boundary cases.",
+        "Sources & confidence",
+        "The evidence layer behind the atlas, separated by source type so official programs, peer-reviewed work, patents, industry reports, and speculative concepts are not treated as equal proof.",
         resultCount(sources.length, "sources")
       )}
       ${renderSourceFilters()}
@@ -674,7 +663,7 @@
                 </div>
                 <h3>${escapeHtml(source.title)}</h3>
                 <span class="chip">${escapeHtml(compactDate(source.date))}</span>
-                <p>${escapeHtml(source.note)}</p>
+                <p><strong>Why it matters:</strong> ${escapeHtml(source.note)}</p>
                 ${usedBy.length ? `<div class="used-by"><strong>Used by</strong><div class="chip-row">${usedBy.map((tech) => `<span class="chip">${escapeHtml(tech.name)}</span>`).join("")}</div></div>` : ""}
                 <a href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">Open source</a>
                 <p class="subtle sme-only">ID: ${escapeHtml(id)} · ${escapeHtml(source.type)}</p>
@@ -742,6 +731,14 @@
         state.query = event.target.value.trim();
         syncSearchInputs(event.target.value);
         render();
+      });
+    });
+    $$('[data-query]').forEach((button) => {
+      button.addEventListener('click', () => {
+        state.query = button.dataset.query || '';
+        syncSearchInputs(state.query);
+        render();
+        $("#databaseView")?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     });
     $("#categoryFilter").addEventListener("change", (event) => {

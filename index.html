@@ -8,7 +8,7 @@
       name="description"
       content="An interactive atlas that scores sci-fi technologies against real R&D analogues, present-day capability, and the manufacturing bottlenecks blocking deployable futures."
     />
-    <meta name="theme-color" content="#090b0f" />
+    <meta name="theme-color" content="#101015" />
     <meta property="og:title" content="Manufacturing the Future — Sci-Fi Technology Reality Atlas" />
     <meta
       property="og:description"
@@ -20,7 +20,7 @@
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23090b0f'/%3E%3Cstop offset='.52' stop-color='%23231d24'/%3E%3Cstop offset='1' stop-color='%2378b8ad'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3Cpath d='M13 42V17h19v6H21v5h10v6H21v8h-8Zm26 5V23H28v-6h29v6H46v24h-7Z' fill='%23f2e8d2'/%3E%3Ccircle cx='51' cy='13' r='5' fill='%23c49a6c' opacity='.88'/%3E%3C/svg%3E" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -36,13 +36,13 @@
         </div>
         <label class="nav-search-wrap" aria-label="Search atlas from header">
           <span class="sr-only">Search atlas</span>
-          <input id="navSearchInput" type="search" placeholder="Search atlas..." autocomplete="off" />
+          <input id="navSearchInput" type="search" placeholder="Search technologies..." autocomplete="off" />
         </label>
         <nav class="view-tabs" aria-label="Atlas views">
-          <button class="tab is-active" type="button" data-view="universes" aria-pressed="true">Universe Rankings</button>
-          <button class="tab" type="button" data-view="technologies" aria-pressed="false">Reality Map</button>
-          <button class="tab" type="button" data-view="bottlenecks" aria-pressed="false">Manufacturing Bottlenecks</button>
-          <button class="tab" type="button" data-view="sources" aria-pressed="false">Evidence Library</button>
+          <button class="tab is-active" type="button" data-view="universes" aria-pressed="true">Which futures are closest?</button>
+          <button class="tab" type="button" data-view="technologies" aria-pressed="false">Technology map</button>
+          <button class="tab" type="button" data-view="bottlenecks" aria-pressed="false">What blocks deployment?</button>
+          <button class="tab" type="button" data-view="sources" aria-pressed="false">Sources & confidence</button>
         </nav>
       </div>
     </header>
@@ -52,24 +52,50 @@
         <div class="hero-grid">
           <div class="hero-copy">
             <p class="eyebrow">Reality scoring for fictional futures</p>
-            <h2 id="page-title">Fiction is full of finished technologies. Reality is full of unfinished manufacturing problems.</h2>
-            <p>
-              A standalone reality atlas mapping sci-fi systems to real R&amp;D analogues, present-day capability scores, and the materials,
-              energy, reliability, process, qualification, and scale bottlenecks between imagination and deployable hardware.
+            <h2 id="page-title">A reality atlas for sci‑fi technology.</h2>
+            <p class="hero-thesis">
+              Fiction shows finished artifacts: starships, implants, terraformed planets, autonomous factories. This atlas asks the engineering
+              question underneath: what can real systems do today, and what breaks first when those futures must be powered, cooled, manufactured,
+              inspected, qualified, and scaled?
             </p>
+            <div class="hero-teaser-grid" aria-label="Example atlas entries">
+              <article>
+                <span>Fictional system</span>
+                <strong>Lightsabers</strong>
+                <p>Closest real analogues: plasma confinement and directed energy. First break: handheld power density plus thermal containment.</p>
+              </article>
+              <article>
+                <span>Fictional system</span>
+                <strong>Powered armor</strong>
+                <p>Closest real analogues: exoskeletons, robotics, compact actuation. First break: energy storage, heat rejection, reliability.</p>
+              </article>
+              <article>
+                <span>Fictional system</span>
+                <strong>Replicators</strong>
+                <p>Closest real analogues: additive manufacturing and synthetic biology. First break: feedstock control and qualification.</p>
+              </article>
+            </div>
             <div class="hero-actions" aria-label="Atlas controls">
               <label class="search-wrap">
                 <span class="sr-only">Search atlas</span>
-                <input id="searchInput" type="search" placeholder="Search universes, technologies, bottlenecks, sources..." autocomplete="off" />
+                <input id="searchInput" type="search" placeholder="Try lightsaber, fusion drive, Mars, exoskeleton..." autocomplete="off" />
               </label>
               <label class="select-wrap">
                 <span>Domain</span>
                 <select id="categoryFilter"></select>
               </label>
-              <label class="mode-toggle" title="Expert mode reveals technical notes, score breakdowns, and source IDs in the database views.">
+              <label class="mode-toggle" title="Adds score rationale, engineering constraints, and source notes.">
                 <input id="smeToggle" type="checkbox" />
-                <span>Expert mode</span>
+                <span>Show technical detail</span>
               </label>
+            </div>
+            <div class="example-searches" aria-label="Example searches">
+              <button type="button" data-query="lightsaber">lightsaber</button>
+              <button type="button" data-query="fusion drive">fusion drive</button>
+              <button type="button" data-query="exoskeleton">exoskeleton</button>
+              <button type="button" data-query="terraforming">terraforming</button>
+              <button type="button" data-query="Mars">Mars</button>
+              <button type="button" data-query="replicator">replicator</button>
             </div>
           </div>
           <div class="atlas-card" aria-label="Atlas snapshot">
@@ -80,11 +106,38 @@
         </div>
       </section>
 
+      <section class="start-path-band" aria-labelledby="start-title">
+        <div class="section-head compact-head">
+          <div>
+            <p class="eyebrow">Start here</p>
+            <h2 id="start-title">Pick the question you want the atlas to answer.</h2>
+          </div>
+          <p>Use this as a guided map, not just a database. Start with a fictional technology, compare whole universes, or jump straight to the manufacturing problems that decide whether a future can scale.</p>
+        </div>
+        <div class="start-card-grid">
+          <a class="start-card" href="#technologies">
+            <span>01</span>
+            <strong>Could this technology exist?</strong>
+            <p>Map a fictional capability to a real analogue, Reality Score, evidence base, and blocking constraints.</p>
+          </a>
+          <a class="start-card" href="#universes">
+            <span>02</span>
+            <strong>Which future is closest?</strong>
+            <p>Rank sci-fi settings by how much of their technology stack closes under current engineering reality.</p>
+          </a>
+          <a class="start-card" href="#bottlenecks">
+            <span>03</span>
+            <strong>What breaks first?</strong>
+            <p>Find the power, thermal, material, reliability, inspection, and qualification barriers beneath the artifact.</p>
+          </a>
+        </div>
+      </section>
+
       <section class="intro-band" aria-labelledby="intro-title">
         <div class="section-head compact-head">
           <div>
             <p class="eyebrow">What this project does</p>
-            <h2 id="intro-title">A public map of the engineering gap between fiction and infrastructure.</h2>
+            <h2 id="intro-title">An editorial engineering atlas, not a hype board.</h2>
           </div>
           <p>
             Science fiction usually shows the finished artifact: the starship, cybernetic implant, terraformed planet, autonomous factory,
@@ -95,17 +148,17 @@
           <article class="intro-card">
             <span>01</span>
             <h3>Compare universes</h3>
-            <p>Rank major sci-fi settings by how close their technology stacks are to present-day engineering reality.</p>
+            <p>See which fictional futures depend on demonstrated physics, fielded cousins, and manufacturable systems.</p>
           </article>
           <article class="intro-card">
             <span>02</span>
             <h3>Trace real analogues</h3>
-            <p>Connect fictional systems to real NASA, lab, clinical, academic, industry, patent, and concept evidence.</p>
+            <p>Connect fictional systems to fielded systems, lab prototypes, patents, peer-reviewed demonstrations, and official programs.</p>
           </article>
           <article class="intro-card">
             <span>03</span>
             <h3>Find the bottlenecks</h3>
-            <p>Surface the materials, process-control, energy, thermal, reliability, and scale barriers blocking deployment.</p>
+            <p>Surface heat that cannot be rejected, materials that fail after cycling, tolerances that cannot be inspected, and processes that cannot be qualified.</p>
           </article>
         </div>
       </section>
@@ -125,8 +178,8 @@
         <div class="method-grid" id="methodCards"></div>
         <div class="weights-panel" aria-label="Scoring dimensions">
           <div>
-            <p class="eyebrow">Scoring rubric</p>
-            <h3>Five dimensions behind each Reality Score</h3>
+            <p class="eyebrow">Scoring method</p>
+            <h3>Reality Score = weighted engineering readiness</h3>
             <p>
               The numbers are deliberately approximate. They make the engineering gap visible; they are not forecasts, market predictions,
               or claims that a fictional system will inevitably exist.
@@ -134,6 +187,11 @@
           </div>
           <div class="weights-grid" id="scoreWeights"></div>
         </div>
+        <aside class="worked-example" aria-label="Worked scoring example">
+          <p class="eyebrow">Worked example</p>
+          <h3>Directed-energy weapons</h3>
+          <p>Physics is real and fielded systems exist, but sci-fi capability is paced by power delivery, beam control, thermal rejection, platform integration, and cost per useful shot. That creates high partial reality without Star Wars-level performance.</p>
+        </aside>
         <aside class="limitations-note">
           <strong>Limitations:</strong> fictional systems vary across canon, real analogues rarely map perfectly, and fast-moving fields can change.
           The goal is not to settle sci-fi debates; it is to expose the manufacturability, qualification, energy, reliability, and scale problems
