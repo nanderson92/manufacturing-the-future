@@ -24,7 +24,7 @@
   }
 
   function colorFor(item) {
-    return item.accent || db.categoryColors[item.domain] || db.categoryColors[item] || "#008f88";
+    return item.accent || db.categoryColors[item.domain] || db.categoryColors[item] || "#1bb8ad";
   }
 
   function pct(value) {
@@ -124,7 +124,7 @@
     const tech = techById.get(id);
     const label = tech ? tech.name : id.replace(/([A-Z])/g, " $1");
     const domain = tech ? tech.domain : "Unknown";
-    const color = tech ? colorFor(tech) : "#5a616b";
+    const color = tech ? colorFor(tech) : "#6e6675";
     return `<span class="chip" style="--accent:${color}"><span style="color:${color}" aria-hidden="true">■</span>${escapeHtml(label)}<span class="subtle">${escapeHtml(domain)}</span></span>`;
   }
 
@@ -250,7 +250,7 @@
             `
           )
           .join("")}
-        <polygon points="${polygon}" fill="rgba(0,143,136,.18)" stroke="#008f88" stroke-width="2" />
+        <polygon points="${polygon}" fill="rgba(27,184,173,.20)" stroke="#1bb8ad" stroke-width="2" />
       </svg>
       <div class="radar-legend" aria-label="Radar chart domain averages">${legend}</div>
     `;
@@ -373,7 +373,7 @@
         return `
           <g class="tech-point" tabindex="0" role="button" data-tech-id="${escapeHtml(tech.id)}" aria-label="${escapeHtml(tech.name)} Reality Score ${tech.completion}">
             <circle cx="${x}" cy="${y}" r="${size}" fill="${escapeHtml(colorFor(tech))}" stroke="white" stroke-width="${selected ? 3 : 1.5}" />
-            ${selected ? `<text x="${x + size + 8}" y="${y + 4}" fill="#15171a" font-size="12" font-weight="900">${escapeHtml(shortLabel(tech.name))}</text>` : ""}
+            ${selected ? `<text x="${x + size + 8}" y="${y + 4}" fill="#2b2034" font-size="12" font-weight="900">${escapeHtml(shortLabel(tech.name))}</text>` : ""}
             <title>${escapeHtml(tech.name)}: Reality Score ${tech.completion}</title>
           </g>
         `;
@@ -383,21 +383,21 @@
     return `
       <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Technology map by Reality Score and manufacturing difficulty">
         <rect x="0" y="0" width="${width}" height="${height}" rx="16" fill="rgba(255,255,255,.55)" />
-        <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="#15171a" stroke-opacity=".3" />
-        <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${height - pad}" stroke="#15171a" stroke-opacity=".3" />
+        <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="#2b2034" stroke-opacity=".24" />
+        <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${height - pad}" stroke="#2b2034" stroke-opacity=".24" />
         ${[20, 40, 60, 80].map((tick) => {
           const x = pad + (tick / 100) * (width - pad * 2);
           const y = height - pad - (tick / 100) * (height - pad * 2);
           return `
-            <line x1="${x}" y1="${pad}" x2="${x}" y2="${height - pad}" stroke="#15171a" stroke-opacity=".07" />
-            <line x1="${pad}" y1="${y}" x2="${width - pad}" y2="${y}" stroke="#15171a" stroke-opacity=".07" />
-            <text x="${x}" y="${height - 24}" text-anchor="middle" font-size="11" fill="#5a616b">${tick}</text>
+            <line x1="${x}" y1="${pad}" x2="${x}" y2="${height - pad}" stroke="#2b2034" stroke-opacity=".075" />
+            <line x1="${pad}" y1="${y}" x2="${width - pad}" y2="${y}" stroke="#2b2034" stroke-opacity=".075" />
+            <text x="${x}" y="${height - 24}" text-anchor="middle" font-size="11" fill="#6e6675">${tick}</text>
           `;
         }).join("")}
-        <text x="${width / 2}" y="${height - 6}" text-anchor="middle" font-size="12" fill="#5a616b" font-weight="800">Reality Score: present-day capability vs fiction</text>
-        <text x="16" y="${height / 2}" transform="rotate(-90 16 ${height / 2})" text-anchor="middle" font-size="12" fill="#5a616b" font-weight="800">Manufacturing and integration difficulty</text>
-        <text x="${pad}" y="${pad - 18}" font-size="12" fill="#5a616b">hard to manufacture</text>
-        <text x="${width - pad}" y="${height - pad + 34}" text-anchor="end" font-size="12" fill="#5a616b">closer to real</text>
+        <text x="${width / 2}" y="${height - 6}" text-anchor="middle" font-size="12" fill="#6e6675" font-weight="800">Reality Score: present-day capability vs fiction</text>
+        <text x="16" y="${height / 2}" transform="rotate(-90 16 ${height / 2})" text-anchor="middle" font-size="12" fill="#6e6675" font-weight="800">Manufacturing and integration difficulty</text>
+        <text x="${pad}" y="${pad - 18}" font-size="12" fill="#6e6675">hard to manufacture</text>
+        <text x="${width - pad}" y="${height - pad + 34}" text-anchor="end" font-size="12" fill="#6e6675">closer to real</text>
         ${nodes}
       </svg>
     `;

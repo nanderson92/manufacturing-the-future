@@ -1,36 +1,36 @@
 window.SCI_FI_DB = {
   "updatedAt": "2026-05-24",
   "categoryColors": {
-    "Propulsion": "#008f88",
-    "Physics": "#7653b5",
-    "Habitats": "#2b6cb0",
-    "Bio/Cybernetics": "#3f9d55",
-    "Computing": "#cc3d3d",
-    "Weapons": "#c8922e",
-    "Manufacturing": "#0b8fad",
-    "Materials": "#6f7f3f",
-    "Planetary": "#9b5c2f",
-    "Robotics": "#b64c7a"
+    "Propulsion": "#1bb8ad",
+    "Physics": "#8b72cf",
+    "Habitats": "#4c7fc5",
+    "Bio/Cybernetics": "#91b66a",
+    "Computing": "#d66f7f",
+    "Weapons": "#dba95d",
+    "Manufacturing": "#2ea6c8",
+    "Materials": "#7d9b72",
+    "Planetary": "#bd7b5a",
+    "Robotics": "#d07aa8"
   },
   "methodCards": [
     {
       "title": "0–20: Physics, not product",
-      "accent": "#7653b5",
+      "accent": "#8b72cf",
       "text": "The idea has theory, lab fragments, or distant analogues, but no useful system close to the fictional job."
     },
     {
       "title": "20–50: Prototype territory",
-      "accent": "#008f88",
+      "accent": "#1bb8ad",
       "text": "Relevant subsystems exist, but power, lifetime, reliability, cost, scale, or integration are still the main story."
     },
     {
       "title": "50–80: Fielded cousin",
-      "accent": "#c8922e",
+      "accent": "#dba95d",
       "text": "Real systems already perform part of the fictional function, usually with narrower range, lower performance, or heavier support hardware."
     },
     {
       "title": "80–100: Current reality",
-      "accent": "#3f9d55",
+      "accent": "#91b66a",
       "text": "The fictional item is essentially available now, or needs ordinary engineering, packaging, and deployment rather than a new breakthrough."
     }
   ],
@@ -394,7 +394,7 @@ window.SCI_FI_DB = {
       "era": "Near-future survival engineering",
       "accuracy": 88,
       "realism": "Hard sci-fi",
-      "accent": "#3f9d55",
+      "accent": "#91b66a",
       "scores": {
         "physics": 92,
         "engineering": 86,
@@ -421,7 +421,7 @@ window.SCI_FI_DB = {
       "era": "Solar-system hard SF",
       "accuracy": 82,
       "realism": "Hard-ish sci-fi",
-      "accent": "#008f88",
+      "accent": "#1bb8ad",
       "scores": {
         "physics": 88,
         "engineering": 80,
@@ -448,7 +448,7 @@ window.SCI_FI_DB = {
       "era": "Classical spaceflight futurism",
       "accuracy": 78,
       "realism": "Engineering-forward",
-      "accent": "#2b6cb0",
+      "accent": "#4c7fc5",
       "scores": {
         "physics": 86,
         "engineering": 76,
@@ -475,7 +475,7 @@ window.SCI_FI_DB = {
       "era": "Near-future augmentation",
       "accuracy": 76,
       "realism": "High in parts",
-      "accent": "#cc3d3d",
+      "accent": "#d66f7f",
       "scores": {
         "physics": 82,
         "engineering": 68,
@@ -502,7 +502,7 @@ window.SCI_FI_DB = {
       "era": "Social technology near-future",
       "accuracy": 66,
       "realism": "Uneven but close",
-      "accent": "#b64c7a",
+      "accent": "#d07aa8",
       "scores": {
         "physics": 80,
         "engineering": 64,
@@ -529,7 +529,7 @@ window.SCI_FI_DB = {
       "era": "Bioindustrial noir",
       "accuracy": 63,
       "realism": "Biotech speculative",
-      "accent": "#9b5c2f",
+      "accent": "#bd7b5a",
       "scores": {
         "physics": 82,
         "engineering": 52,
@@ -556,7 +556,7 @@ window.SCI_FI_DB = {
       "era": "Industrial deep-space horror",
       "accuracy": 58,
       "realism": "Gritty speculative",
-      "accent": "#6f7f3f",
+      "accent": "#7d9b72",
       "scores": {
         "physics": 62,
         "engineering": 58,
@@ -583,7 +583,7 @@ window.SCI_FI_DB = {
       "era": "Planetary ecology and neuro-linking",
       "accuracy": 55,
       "realism": "Biology-forward fantasy",
-      "accent": "#0b8fad",
+      "accent": "#2ea6c8",
       "scores": {
         "physics": 50,
         "engineering": 52,
@@ -610,7 +610,7 @@ window.SCI_FI_DB = {
       "era": "Feudal interstellar ecology",
       "accuracy": 49,
       "realism": "Mixed",
-      "accent": "#c8922e",
+      "accent": "#dba95d",
       "scores": {
         "physics": 36,
         "engineering": 58,
@@ -637,7 +637,7 @@ window.SCI_FI_DB = {
       "era": "Military space opera",
       "accuracy": 45,
       "realism": "Human factors plausible",
-      "accent": "#2b6cb0",
+      "accent": "#4c7fc5",
       "scores": {
         "physics": 38,
         "engineering": 54,
@@ -664,7 +664,7 @@ window.SCI_FI_DB = {
       "era": "Galactic civilization",
       "accuracy": 40,
       "realism": "Sociotechnical myth",
-      "accent": "#7653b5",
+      "accent": "#8b72cf",
       "scores": {
         "physics": 24,
         "engineering": 42,
@@ -691,7 +691,7 @@ window.SCI_FI_DB = {
       "era": "Post-scarcity exploration",
       "accuracy": 34,
       "realism": "Aspirational speculative",
-      "accent": "#cc3d3d",
+      "accent": "#d66f7f",
       "scores": {
         "physics": 18,
         "engineering": 42,
@@ -719,7 +719,7 @@ window.SCI_FI_DB = {
       "era": "Cosmic physics speculation",
       "accuracy": 34,
       "realism": "Conceptually rigorous, wildly stretched",
-      "accent": "#7653b5",
+      "accent": "#8b72cf",
       "scores": {
         "physics": 34,
         "engineering": 28,
@@ -746,7 +746,7 @@ window.SCI_FI_DB = {
       "era": "Military megastructure SF",
       "accuracy": 32,
       "realism": "Combat tech mixed",
-      "accent": "#3f9d55",
+      "accent": "#91b66a",
       "scores": {
         "physics": 22,
         "engineering": 44,
@@ -773,7 +773,7 @@ window.SCI_FI_DB = {
       "era": "Relativistic space opera",
       "accuracy": 28,
       "realism": "Physics-flavored magic",
-      "accent": "#008f88",
+      "accent": "#1bb8ad",
       "scores": {
         "physics": 14,
         "engineering": 38,
@@ -800,7 +800,7 @@ window.SCI_FI_DB = {
       "era": "Post-scarcity machine civilization",
       "accuracy": 22,
       "realism": "Far-future speculative",
-      "accent": "#0b8fad",
+      "accent": "#2ea6c8",
       "scores": {
         "physics": 12,
         "engineering": 24,
@@ -827,7 +827,7 @@ window.SCI_FI_DB = {
       "era": "Mythic space fantasy",
       "accuracy": 18,
       "realism": "Visual fantasy",
-      "accent": "#c8922e",
+      "accent": "#dba95d",
       "scores": {
         "physics": 8,
         "engineering": 26,
@@ -854,7 +854,7 @@ window.SCI_FI_DB = {
       "era": "Gothic far-future war",
       "accuracy": 12,
       "realism": "Mythic extreme",
-      "accent": "#cc3d3d",
+      "accent": "#d66f7f",
       "scores": {
         "physics": 6,
         "engineering": 22,
@@ -1779,7 +1779,7 @@ window.SCI_FI_DB = {
       "domain": "Materials",
       "severity": 95,
       "difficulty": 92,
-      "accent": "#6f7f3f",
+      "accent": "#7d9b72",
       "unlocks": [
         "fusionTorch",
         "advancedSuperconductors",
@@ -1800,7 +1800,7 @@ window.SCI_FI_DB = {
       "domain": "Materials",
       "severity": 88,
       "difficulty": 84,
-      "accent": "#6f7f3f",
+      "accent": "#7d9b72",
       "unlocks": [
         "advancedSuperconductors",
         "fusionTorch",
@@ -1820,7 +1820,7 @@ window.SCI_FI_DB = {
       "domain": "Habitats",
       "severity": 86,
       "difficulty": 82,
-      "accent": "#2b6cb0",
+      "accent": "#4c7fc5",
       "unlocks": [
         "fusionTorch",
         "nuclearThermal",
@@ -1843,7 +1843,7 @@ window.SCI_FI_DB = {
       "domain": "Bio/Cybernetics",
       "severity": 82,
       "difficulty": 78,
-      "accent": "#3f9d55",
+      "accent": "#91b66a",
       "unlocks": [
         "bciCyberware",
         "mindUploading",
@@ -1864,7 +1864,7 @@ window.SCI_FI_DB = {
       "domain": "Robotics",
       "severity": 80,
       "difficulty": 76,
-      "accent": "#b64c7a",
+      "accent": "#d07aa8",
       "unlocks": [
         "humanoidAndroids",
         "syntheticHumans",
@@ -1886,7 +1886,7 @@ window.SCI_FI_DB = {
       "domain": "Materials",
       "severity": 79,
       "difficulty": 72,
-      "accent": "#c8922e",
+      "accent": "#dba95d",
       "unlocks": [
         "exoskeletonArmor",
         "lightsaber",
@@ -1907,7 +1907,7 @@ window.SCI_FI_DB = {
       "domain": "Manufacturing",
       "severity": 77,
       "difficulty": 70,
-      "accent": "#0b8fad",
+      "accent": "#2ea6c8",
       "unlocks": [
         "replicator",
         "isru",
@@ -1929,7 +1929,7 @@ window.SCI_FI_DB = {
       "domain": "Manufacturing",
       "severity": 92,
       "difficulty": 90,
-      "accent": "#0b8fad",
+      "accent": "#2ea6c8",
       "unlocks": [
         "isru",
         "terraforming",
@@ -1951,7 +1951,7 @@ window.SCI_FI_DB = {
       "domain": "Habitats",
       "severity": 75,
       "difficulty": 74,
-      "accent": "#2b6cb0",
+      "accent": "#4c7fc5",
       "unlocks": [
         "closedLifeSupport",
         "spaceHabitats",
@@ -1972,7 +1972,7 @@ window.SCI_FI_DB = {
       "domain": "Materials",
       "severity": 72,
       "difficulty": 80,
-      "accent": "#6f7f3f",
+      "accent": "#7d9b72",
       "unlocks": [
         "cloaking",
         "personalShields",
@@ -1993,7 +1993,7 @@ window.SCI_FI_DB = {
       "domain": "Computing",
       "severity": 81,
       "difficulty": 73,
-      "accent": "#cc3d3d",
+      "accent": "#d66f7f",
       "unlocks": [
         "aiShipMind",
         "humanoidAndroids",
@@ -2015,7 +2015,7 @@ window.SCI_FI_DB = {
       "domain": "Bio/Cybernetics",
       "severity": 70,
       "difficulty": 86,
-      "accent": "#3f9d55",
+      "accent": "#91b66a",
       "unlocks": [
         "cryosleep",
         "closedLifeSupport",
@@ -2035,7 +2035,7 @@ window.SCI_FI_DB = {
       "domain": "Propulsion",
       "severity": 90,
       "difficulty": 98,
-      "accent": "#008f88",
+      "accent": "#1bb8ad",
       "unlocks": [
         "antimatterDrive",
         "fusionTorch"
@@ -2055,7 +2055,7 @@ window.SCI_FI_DB = {
       "domain": "Habitats",
       "severity": 83,
       "difficulty": 82,
-      "accent": "#2b6cb0",
+      "accent": "#4c7fc5",
       "unlocks": [
         "rotatingGravity",
         "spaceHabitats",
@@ -2076,7 +2076,7 @@ window.SCI_FI_DB = {
       "domain": "Weapons",
       "severity": 74,
       "difficulty": 68,
-      "accent": "#c8922e",
+      "accent": "#dba95d",
       "unlocks": [
         "directedEnergy",
         "lightsaber",
@@ -2098,7 +2098,7 @@ window.SCI_FI_DB = {
       "domain": "Computing",
       "severity": 64,
       "difficulty": 72,
-      "accent": "#cc3d3d",
+      "accent": "#d66f7f",
       "unlocks": [
         "quantumComms",
         "matterTeleport"
