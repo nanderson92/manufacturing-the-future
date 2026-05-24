@@ -24,7 +24,7 @@
   }
 
   function colorFor(item) {
-    return item.accent || db.categoryColors[item.domain] || db.categoryColors[item] || "#1bb8ad";
+    return item.accent || db.categoryColors[item.domain] || db.categoryColors[item] || "#50e3d3";
   }
 
   function pct(value) {
@@ -124,7 +124,7 @@
     const tech = techById.get(id);
     const label = tech ? tech.name : id.replace(/([A-Z])/g, " $1");
     const domain = tech ? tech.domain : "Unknown";
-    const color = tech ? colorFor(tech) : "#6e6675";
+    const color = tech ? colorFor(tech) : "#aaa99f";
     return `<span class="chip" style="--accent:${color}"><span style="color:${color}" aria-hidden="true">■</span>${escapeHtml(label)}<span class="subtle">${escapeHtml(domain)}</span></span>`;
   }
 
@@ -238,19 +238,19 @@
         <p>Top universe score: ${topUniverse.accuracy}. Radar spokes show average Reality Score by technology domain.</p>
       </div>
       <svg viewBox="0 0 340 340" role="img" aria-label="Average Reality Score radar by technology domain">
-        <circle cx="${cx}" cy="${cy}" r="108" fill="none" stroke="rgba(16,20,23,.18)" />
-        <circle cx="${cx}" cy="${cy}" r="72" fill="none" stroke="rgba(16,20,23,.12)" />
-        <circle cx="${cx}" cy="${cy}" r="36" fill="none" stroke="rgba(16,20,23,.1)" />
+        <circle cx="${cx}" cy="${cy}" r="108" fill="none" stroke="rgba(238,232,214,.18)" />
+        <circle cx="${cx}" cy="${cy}" r="72" fill="none" stroke="rgba(238,232,214,.12)" />
+        <circle cx="${cx}" cy="${cy}" r="36" fill="none" stroke="rgba(238,232,214,.10)" />
         ${points
           .map(
             (point) => `
-              <line x1="${cx}" y1="${cy}" x2="${point.ax}" y2="${point.ay}" stroke="rgba(16,20,23,.13)" />
+              <line x1="${cx}" y1="${cy}" x2="${point.ax}" y2="${point.ay}" stroke="rgba(238,232,214,.14)" />
               <circle cx="${point.ax}" cy="${point.ay}" r="4" fill="${escapeHtml(db.categoryColors[point.category])}" />
-              <text x="${point.lx}" y="${point.ly}" text-anchor="${point.lx < cx - 8 ? "end" : point.lx > cx + 8 ? "start" : "middle"}" fill="#59636c" font-size="10" font-weight="800">${escapeHtml(point.category.split("/")[0])}</text>
+              <text x="${point.lx}" y="${point.ly}" text-anchor="${point.lx < cx - 8 ? "end" : point.lx > cx + 8 ? "start" : "middle"}" fill="rgba(238,232,214,.72)" font-size="10" font-weight="800">${escapeHtml(point.category.split("/")[0])}</text>
             `
           )
           .join("")}
-        <polygon points="${polygon}" fill="rgba(27,184,173,.20)" stroke="#1bb8ad" stroke-width="2" />
+        <polygon points="${polygon}" fill="rgba(80,227,211,.18)" stroke="#50e3d3" stroke-width="2" />
       </svg>
       <div class="radar-legend" aria-label="Radar chart domain averages">${legend}</div>
     `;
@@ -373,7 +373,7 @@
         return `
           <g class="tech-point" tabindex="0" role="button" data-tech-id="${escapeHtml(tech.id)}" aria-label="${escapeHtml(tech.name)} Reality Score ${tech.completion}">
             <circle cx="${x}" cy="${y}" r="${size}" fill="${escapeHtml(colorFor(tech))}" stroke="white" stroke-width="${selected ? 3 : 1.5}" />
-            ${selected ? `<text x="${x + size + 8}" y="${y + 4}" fill="#2b2034" font-size="12" font-weight="900">${escapeHtml(shortLabel(tech.name))}</text>` : ""}
+            ${selected ? `<text x="${x + size + 8}" y="${y + 4}" fill="#fff4d8" font-size="12" font-weight="900">${escapeHtml(shortLabel(tech.name))}</text>` : ""}
             <title>${escapeHtml(tech.name)}: Reality Score ${tech.completion}</title>
           </g>
         `;
@@ -382,22 +382,22 @@
 
     return `
       <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Technology map by Reality Score and manufacturing difficulty">
-        <rect x="0" y="0" width="${width}" height="${height}" rx="16" fill="rgba(255,255,255,.55)" />
-        <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="#2b2034" stroke-opacity=".24" />
-        <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${height - pad}" stroke="#2b2034" stroke-opacity=".24" />
+        <rect x="0" y="0" width="${width}" height="${height}" rx="16" fill="rgba(12,16,24,.68)" />
+        <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="rgba(238,232,214,.25)" />
+        <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${height - pad}" stroke="rgba(238,232,214,.25)" />
         ${[20, 40, 60, 80].map((tick) => {
           const x = pad + (tick / 100) * (width - pad * 2);
           const y = height - pad - (tick / 100) * (height - pad * 2);
           return `
-            <line x1="${x}" y1="${pad}" x2="${x}" y2="${height - pad}" stroke="#2b2034" stroke-opacity=".075" />
-            <line x1="${pad}" y1="${y}" x2="${width - pad}" y2="${y}" stroke="#2b2034" stroke-opacity=".075" />
-            <text x="${x}" y="${height - 24}" text-anchor="middle" font-size="11" fill="#6e6675">${tick}</text>
+            <line x1="${x}" y1="${pad}" x2="${x}" y2="${height - pad}" stroke="rgba(238,232,214,.085)" />
+            <line x1="${pad}" y1="${y}" x2="${width - pad}" y2="${y}" stroke="rgba(238,232,214,.085)" />
+            <text x="${x}" y="${height - 24}" text-anchor="middle" font-size="11" fill="rgba(238,232,214,.66)">${tick}</text>
           `;
         }).join("")}
-        <text x="${width / 2}" y="${height - 6}" text-anchor="middle" font-size="12" fill="#6e6675" font-weight="800">Reality Score: present-day capability vs fiction</text>
-        <text x="16" y="${height / 2}" transform="rotate(-90 16 ${height / 2})" text-anchor="middle" font-size="12" fill="#6e6675" font-weight="800">Manufacturing and integration difficulty</text>
-        <text x="${pad}" y="${pad - 18}" font-size="12" fill="#6e6675">hard to manufacture</text>
-        <text x="${width - pad}" y="${height - pad + 34}" text-anchor="end" font-size="12" fill="#6e6675">closer to real</text>
+        <text x="${width / 2}" y="${height - 6}" text-anchor="middle" font-size="12" fill="rgba(238,232,214,.66)" font-weight="800">Reality Score: present-day capability vs fiction</text>
+        <text x="16" y="${height / 2}" transform="rotate(-90 16 ${height / 2})" text-anchor="middle" font-size="12" fill="rgba(238,232,214,.66)" font-weight="800">Manufacturing and integration difficulty</text>
+        <text x="${pad}" y="${pad - 18}" font-size="12" fill="rgba(238,232,214,.66)">hard to manufacture</text>
+        <text x="${width - pad}" y="${height - pad + 34}" text-anchor="end" font-size="12" fill="rgba(238,232,214,.66)">closer to real</text>
         ${nodes}
       </svg>
     `;
