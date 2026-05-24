@@ -455,7 +455,7 @@
           <div>
             <span class="kicker">${escapeHtml(tech.domain)} · ${escapeHtml(tech.confidence)} confidence · updated ${escapeHtml(compactDate(tech.updated))}</span>
             <h3>${escapeHtml(tech.name)}</h3>
-            <p class="subtle">${escapeHtml(tech.fiction)}</p>
+            <p class="subtle">Reality Score ${tech.completion}/100 · ${escapeHtml(tech.confidence)} confidence</p>
           </div>
         </div>
         <div class="detail-block">
