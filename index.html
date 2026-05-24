@@ -3,25 +3,36 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sci-Fi Technology Reality Atlas</title>
+    <title>Manufacturing the Future | Reality Atlas</title>
+    <meta
+      name="description"
+      content="An evidence-linked atlas comparing sci-fi technologies with real R&D analogues, manufacturing bottlenecks, and present-day capability scores."
+    />
+    <meta name="theme-color" content="#f7faf5" />
+    <meta property="og:title" content="Manufacturing the Future | Reality Atlas" />
+    <meta
+      property="og:description"
+      content="Fictional futures ranked by manufacturing reality: real R&D analogues, completion scores, confidence labels, and bottlenecks blocking fiction from hardware."
+    />
+    <meta property="og:type" content="website" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
     <header class="site-header">
       <div class="header-inner">
-        <div class="brand-lockup" aria-label="Sci-Fi Technology Reality Atlas">
-          <span class="brand-mark" aria-hidden="true">SF</span>
+        <a class="brand-lockup" href="#universes" aria-label="Go to Reality Atlas home view">
+          <span class="brand-mark" aria-hidden="true">MTF</span>
           <div>
             <p class="eyebrow">Manufacturing the Future</p>
-            <h1>Sci-Fi Technology Reality Atlas</h1>
+            <h1>Reality Atlas</h1>
           </div>
-        </div>
+        </a>
         <nav class="view-tabs" aria-label="Database views">
-          <button class="tab is-active" data-view="universes">Universes</button>
-          <button class="tab" data-view="technologies">Tech Map</button>
-          <button class="tab" data-view="bottlenecks">Bottlenecks</button>
-          <button class="tab" data-view="sources">Sources</button>
+          <button class="tab is-active" data-view="universes" aria-pressed="true">Universes</button>
+          <button class="tab" data-view="technologies" aria-pressed="false">Tech Map</button>
+          <button class="tab" data-view="bottlenecks" aria-pressed="false">Bottlenecks</button>
+          <button class="tab" data-view="sources" aria-pressed="false">Sources</button>
         </nav>
       </div>
     </header>
@@ -30,16 +41,21 @@
       <section class="hero-band" aria-labelledby="page-title">
         <div class="hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">Reality scoring for fictional futures</p>
-            <h2 id="page-title">How real is sci-fi technology?</h2>
-            <p>
-              Compare major universes, real R&amp;D analogues, estimated completion, and the manufacturing bottlenecks still
-              blocking the road from fiction to hardware.
+            <p class="eyebrow">Speculative technology readiness map</p>
+            <h2 id="page-title">Fictional futures, ranked by manufacturing reality.</h2>
+            <p class="hero-lede">
+              Compare sci-fi technologies against real R&amp;D analogues, deployment maturity, and the process bottlenecks still
+              blocking fiction from becoming hardware.
             </p>
+            <div class="hero-badges" aria-label="Atlas scope">
+              <span>Evidence-linked</span>
+              <span>Manufacturing bottlenecks</span>
+              <span>Present-day scoring</span>
+            </div>
             <div class="hero-actions" aria-label="Database controls">
               <label class="search-wrap">
                 <span class="sr-only">Search database</span>
-                <input id="searchInput" type="search" placeholder="Search atlas..." autocomplete="off" />
+                <input id="searchInput" type="search" placeholder="Search technologies, universes, bottlenecks..." autocomplete="off" />
               </label>
               <label class="select-wrap">
                 <span>Domain</span>
@@ -52,6 +68,7 @@
             </div>
           </div>
           <div class="atlas-card" aria-label="Database snapshot">
+            <div class="card-kicker">Capability radar</div>
             <div class="radar-shell" id="heroRadar"></div>
             <div class="stats-grid" id="statsGrid"></div>
           </div>
@@ -65,19 +82,63 @@
             <h2 id="method-title">Completion is a present-day capability score, not a prediction.</h2>
           </div>
           <p>
-            Scores blend demonstrated physics, engineered prototypes, deployment maturity, manufacturing scalability, and how far the
-            fictional version stretches beyond the closest real system.
+            A high score does not mean the fictional version exists. It means the closest real-world capability has crossed more of
+            the physics, prototype, deployment, and manufacturing thresholds.
           </p>
         </div>
         <div id="methodCards" class="method-grid"></div>
+
+        <div class="scoring-model" aria-label="Scoring model">
+          <article class="formula-card">
+            <p class="eyebrow">Audit model</p>
+            <h3>Completion Score</h3>
+            <p>
+              Demonstrated capability, prototype maturity, deployment maturity, manufacturing scalability, and fictional stretch are
+              treated as separate signals before the final percentage is assigned.
+            </p>
+            <code>score = capability maturity − fictional stretch</code>
+          </article>
+          <article class="weight-card"><span>25%</span><strong>Physics demonstrated</strong><p>Does the underlying effect work outside speculation?</p></article>
+          <article class="weight-card"><span>20%</span><strong>Prototype maturity</strong><p>Has a useful device, subsystem, or controlled demo been built?</p></article>
+          <article class="weight-card"><span>20%</span><strong>Deployment maturity</strong><p>Is there a fielded, commercial, clinical, or operational cousin?</p></article>
+          <article class="weight-card"><span>25%</span><strong>Manufacturing scalability</strong><p>Can it be produced reliably, repeatedly, and at meaningful scale?</p></article>
+          <article class="weight-card"><span>10%</span><strong>Fictional stretch penalty</strong><p>How far does the fictional version exceed the closest real analogue?</p></article>
+        </div>
       </section>
 
-      <section id="databaseView" class="database-band" aria-live="polite"></section>
+      <p id="resultStatus" class="sr-only" aria-live="polite"></p>
+      <section id="databaseView" class="database-band"></section>
+
+      <section class="creator-band" aria-labelledby="creator-title">
+        <div>
+          <p class="eyebrow">Why this exists</p>
+          <h2 id="creator-title">A public engineering thought experiment.</h2>
+          <p>
+            This atlas asks what happens when imagined futures are evaluated through manufacturability, scale-up, reliability,
+            evidence quality, and process bottlenecks instead of pure aesthetic appeal. The goal is not exact prophecy; the goal is to
+            make technology readiness legible.
+          </p>
+        </div>
+        <div class="creator-card">
+          <span class="creator-mark" aria-hidden="true">NA</span>
+          <div>
+            <strong>Built by Nathan Anderson</strong>
+            <p>Chemical &amp; Biomolecular Engineering · Georgia Tech</p>
+            <a href="https://nanderson92.github.io/" rel="noreferrer">Back to engineering portfolio</a>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
-      <p>Curated snapshot: <span id="updatedAt"></span>. Percentages are interpretive, evidence-linked estimates.</p>
+      <p>Curated snapshot: <span id="updatedAt"></span>. Percentages are interpretive, evidence-linked estimates and should be read with the listed confidence labels.</p>
     </footer>
+
+    <noscript>
+      <div class="noscript-card">
+        This interactive atlas requires JavaScript to display the database, filters, source library, and scoring views.
+      </div>
+    </noscript>
 
     <script src="./data.js"></script>
     <script src="./app.js"></script>
