@@ -3,36 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Manufacturing the Future | Reality Atlas</title>
+    <title>Manufacturing the Future — Sci-Fi Technology Reality Atlas</title>
     <meta
       name="description"
-      content="An evidence-linked atlas comparing sci-fi technologies with real R&D analogues, manufacturing bottlenecks, and present-day capability scores."
+      content="An interactive atlas that scores sci-fi technologies against real R&D analogues, present-day capability, and the manufacturing bottlenecks blocking deployable futures."
     />
-    <meta name="theme-color" content="#f7faf5" />
-    <meta property="og:title" content="Manufacturing the Future | Reality Atlas" />
+    <meta name="theme-color" content="#0b1f2a" />
+    <meta property="og:title" content="Manufacturing the Future — Sci-Fi Technology Reality Atlas" />
     <meta
       property="og:description"
-      content="Fictional futures ranked by manufacturing reality: real R&D analogues, completion scores, confidence labels, and bottlenecks blocking fiction from hardware."
+      content="Compare fictional technologies against real R&D analogues, Reality Scores, and the manufacturing bottlenecks separating fiction from hardware."
     />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nanderson92.github.io/manufacturing-the-future/" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1f2a'/%3E%3Cpath d='M14 40V16h18v6H21v5h10v6H21v7h-7Zm25 8V22H28v-6h28v6H46v26h-7Z' fill='%2372fff2'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
     <header class="site-header">
       <div class="header-inner">
-        <a class="brand-lockup" href="#universes" aria-label="Go to Reality Atlas home view">
-          <span class="brand-mark" aria-hidden="true">MTF</span>
+        <div class="brand-lockup" aria-label="Manufacturing the Future — Sci-Fi Technology Reality Atlas">
+          <span class="brand-mark" aria-hidden="true">F→R</span>
           <div>
             <p class="eyebrow">Manufacturing the Future</p>
-            <h1>Reality Atlas</h1>
+            <h1>Fiction-to-Reality Atlas</h1>
           </div>
-        </a>
-        <nav class="view-tabs" aria-label="Database views">
-          <button class="tab is-active" data-view="universes" aria-pressed="true">Universes</button>
-          <button class="tab" data-view="technologies" aria-pressed="false">Tech Map</button>
-          <button class="tab" data-view="bottlenecks" aria-pressed="false">Bottlenecks</button>
-          <button class="tab" data-view="sources" aria-pressed="false">Sources</button>
+        </div>
+        <nav class="view-tabs" aria-label="Atlas views">
+          <button class="tab is-active" type="button" data-view="universes" aria-pressed="true">Universe Rankings</button>
+          <button class="tab" type="button" data-view="technologies" aria-pressed="false">Reality Map</button>
+          <button class="tab" type="button" data-view="bottlenecks" aria-pressed="false">Manufacturing Bottlenecks</button>
+          <button class="tab" type="button" data-view="sources" aria-pressed="false">Evidence Library</button>
         </nav>
       </div>
     </header>
@@ -41,21 +44,16 @@
       <section class="hero-band" aria-labelledby="page-title">
         <div class="hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">Speculative technology readiness map</p>
-            <h2 id="page-title">Fictional futures, ranked by manufacturing reality.</h2>
-            <p class="hero-lede">
-              Compare sci-fi technologies against real R&amp;D analogues, deployment maturity, and the process bottlenecks still
-              blocking fiction from becoming hardware.
+            <p class="eyebrow">Reality scoring for fictional futures</p>
+            <h2 id="page-title">Fiction is full of finished technologies. Reality is full of unfinished manufacturing problems.</h2>
+            <p>
+              This standalone atlas maps sci-fi technologies to real R&amp;D analogues, present-day capability scores, and the materials,
+              energy, reliability, process, and scale bottlenecks that still separate imagination from deployable hardware.
             </p>
-            <div class="hero-badges" aria-label="Atlas scope">
-              <span>Evidence-linked</span>
-              <span>Manufacturing bottlenecks</span>
-              <span>Present-day scoring</span>
-            </div>
-            <div class="hero-actions" aria-label="Database controls">
+            <div class="hero-actions" aria-label="Atlas controls">
               <label class="search-wrap">
-                <span class="sr-only">Search database</span>
-                <input id="searchInput" type="search" placeholder="Search technologies, universes, bottlenecks..." autocomplete="off" />
+                <span class="sr-only">Search atlas</span>
+                <input id="searchInput" type="search" placeholder="Search universes, technologies, bottlenecks, sources..." autocomplete="off" />
               </label>
               <label class="select-wrap">
                 <span>Domain</span>
@@ -63,15 +61,45 @@
               </label>
               <label class="mode-toggle">
                 <input id="smeToggle" type="checkbox" />
-                <span>SME detail</span>
+                <span>Expert mode</span>
               </label>
             </div>
           </div>
-          <div class="atlas-card" aria-label="Database snapshot">
-            <div class="card-kicker">Capability radar</div>
+          <div class="atlas-card" aria-label="Atlas snapshot">
             <div class="radar-shell" id="heroRadar"></div>
             <div class="stats-grid" id="statsGrid"></div>
+            <div class="hero-contrast" id="heroContrast"></div>
           </div>
+        </div>
+      </section>
+
+      <section class="intro-band" aria-labelledby="intro-title">
+        <div class="section-head compact-head">
+          <div>
+            <p class="eyebrow">What this project does</p>
+            <h2 id="intro-title">A public map of the engineering gap between fiction and infrastructure.</h2>
+          </div>
+          <p>
+            Science fiction usually shows the finished artifact: the starship, cybernetic implant, terraformed planet, autonomous factory,
+            or synthetic person. This atlas asks what would actually need to be powered, cooled, manufactured, inspected, qualified, and scaled.
+          </p>
+        </div>
+        <div class="intro-grid">
+          <article class="intro-card">
+            <span>01</span>
+            <h3>Compare universes</h3>
+            <p>Rank major sci-fi settings by how close their technology stacks are to present-day engineering reality.</p>
+          </article>
+          <article class="intro-card">
+            <span>02</span>
+            <h3>Trace real analogues</h3>
+            <p>Connect fictional systems to real NASA, lab, clinical, academic, industry, patent, and concept evidence.</p>
+          </article>
+          <article class="intro-card">
+            <span>03</span>
+            <h3>Find the bottlenecks</h3>
+            <p>Surface the materials, process-control, energy, thermal, reliability, and scale barriers blocking deployment.</p>
+          </article>
         </div>
       </section>
 
@@ -79,66 +107,48 @@
         <div class="section-head">
           <div>
             <p class="eyebrow">How to read the score</p>
-            <h2 id="method-title">Completion is a present-day capability score, not a prediction.</h2>
+            <h2 id="method-title">Reality Score is a present-day capability score, not a prediction.</h2>
           </div>
           <p>
-            A high score does not mean the fictional version exists. It means the closest real-world capability has crossed more of
-            the physics, prototype, deployment, and manufacturing thresholds.
+            Scores are interpretive engineering estimates. A high score means the closest real analogue performs a meaningful fraction of the
+            fictional function today. A low score means the fictional system still depends on unresolved physics, extreme materials, impossible
+            energy density, or unproven integration.
           </p>
         </div>
-        <div id="methodCards" class="method-grid"></div>
-
-        <div class="scoring-model" aria-label="Scoring model">
-          <article class="formula-card">
-            <p class="eyebrow">Audit model</p>
-            <h3>Completion Score</h3>
-            <p>
-              Demonstrated capability, prototype maturity, deployment maturity, manufacturing scalability, and fictional stretch are
-              treated as separate signals before the final percentage is assigned.
-            </p>
-            <code>score = capability maturity − fictional stretch</code>
-          </article>
-          <article class="weight-card"><span>25%</span><strong>Physics demonstrated</strong><p>Does the underlying effect work outside speculation?</p></article>
-          <article class="weight-card"><span>20%</span><strong>Prototype maturity</strong><p>Has a useful device, subsystem, or controlled demo been built?</p></article>
-          <article class="weight-card"><span>20%</span><strong>Deployment maturity</strong><p>Is there a fielded, commercial, clinical, or operational cousin?</p></article>
-          <article class="weight-card"><span>25%</span><strong>Manufacturing scalability</strong><p>Can it be produced reliably, repeatedly, and at meaningful scale?</p></article>
-          <article class="weight-card"><span>10%</span><strong>Fictional stretch penalty</strong><p>How far does the fictional version exceed the closest real analogue?</p></article>
-        </div>
-      </section>
-
-      <p id="resultStatus" class="sr-only" aria-live="polite"></p>
-      <section id="databaseView" class="database-band"></section>
-
-      <section class="creator-band" aria-labelledby="creator-title">
-        <div>
-          <p class="eyebrow">Why this exists</p>
-          <h2 id="creator-title">A public engineering thought experiment.</h2>
-          <p>
-            This atlas asks what happens when imagined futures are evaluated through manufacturability, scale-up, reliability,
-            evidence quality, and process bottlenecks instead of pure aesthetic appeal. The goal is not exact prophecy; the goal is to
-            make technology readiness legible.
-          </p>
-        </div>
-        <div class="creator-card">
-          <span class="creator-mark" aria-hidden="true">NA</span>
+        <div class="method-grid" id="methodCards"></div>
+        <div class="weights-panel" aria-label="Scoring dimensions">
           <div>
-            <strong>Built by Nathan Anderson</strong>
-            <p>Chemical &amp; Biomolecular Engineering · Georgia Tech</p>
-            <a href="https://nanderson92.github.io/" rel="noreferrer">Back to engineering portfolio</a>
+            <p class="eyebrow">Scoring rubric</p>
+            <h3>Five dimensions behind each Reality Score</h3>
+            <p>
+              The numbers are deliberately approximate. They make the engineering gap visible; they are not forecasts, market predictions,
+              or claims that a fictional system will inevitably exist.
+            </p>
           </div>
+          <div class="weights-grid" id="scoreWeights"></div>
         </div>
+        <aside class="limitations-note">
+          <strong>Limitations:</strong> fictional systems vary across canon, real analogues rarely map perfectly, and fast-moving fields can change.
+          The goal is not to settle sci-fi debates; it is to expose the manufacturability, qualification, energy, reliability, and scale problems
+          underneath the imagined artifact.
+        </aside>
       </section>
+
+      <noscript>
+        <section class="database-band">
+          <div class="empty-state">
+            This atlas requires JavaScript to render the interactive database. Please enable JavaScript to view universe rankings,
+            technology maps, bottlenecks, and evidence sources.
+          </div>
+        </section>
+      </noscript>
+
+      <section id="databaseView" class="database-band" aria-live="polite"></section>
     </main>
 
     <footer class="site-footer">
-      <p>Curated snapshot: <span id="updatedAt"></span>. Percentages are interpretive, evidence-linked estimates and should be read with the listed confidence labels.</p>
+      <p>Curated snapshot: <span id="updatedAt">2026-05-24</span>. Reality Scores are interpretive, evidence-linked estimates.</p>
     </footer>
-
-    <noscript>
-      <div class="noscript-card">
-        This interactive atlas requires JavaScript to display the database, filters, source library, and scoring views.
-      </div>
-    </noscript>
 
     <script src="./data.js"></script>
     <script src="./app.js"></script>
