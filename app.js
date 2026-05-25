@@ -35,6 +35,32 @@
     return Math.round(value);
   }
 
+  function scoreColor(value) {
+    const v = Number(value) || 0;
+    if (v >= 75) return "#9fc6a8";
+    if (v >= 50) return "#d2aa6f";
+    if (v >= 30) return "#c98970";
+    return "#b56b75";
+  }
+
+  function universeTier(universe) {
+    const v = Number(universe.accuracy) || 0;
+    if (v >= 75) return "Hard / engineering-forward";
+    if (v >= 60) return "Near-future plausible";
+    if (v >= 45) return "Mixed speculative";
+    if (v >= 30) return "Cinematic stretch";
+    return "Mythic / far-future";
+  }
+
+  function scrollToDatabase() {
+    const target = $("#databaseView");
+    const header = $(".site-header");
+    if (!target) return;
+    const offset = (header?.getBoundingClientRect().height || 0) + 18;
+    const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  }
+
   function allCategories() {
     return ["All", ...Object.keys(db.categoryColors)];
   }
@@ -214,11 +240,11 @@
         <p>
           The closest real analogue is not one object; it is exoskeleton robotics, compact actuation, armor materials, sensing, and thermal management trying to close at the same time.
         </p>
-        <div class="feature-score-row" style="--accent:${escapeHtml(colorFor(poweredArmor || topUniverse))}">
+        <div class="feature-score-row" style="--accent:${escapeHtml(colorFor(poweredArmor || topUniverse))};--score:${poweredArmor ? poweredArmor.completion : topUniverse.accuracy};--score-color:${escapeHtml(scoreColor(poweredArmor ? poweredArmor.completion : topUniverse.accuracy))}">
           <strong>${poweredArmor ? poweredArmor.completion : topUniverse.accuracy}</strong>
           <div>
             <span>Reality Score</span>
-            <div class="meter"><span style="--value:${poweredArmor ? poweredArmor.completion : topUniverse.accuracy}%"></span></div>
+            <div class="meter"><span style="--value:${poweredArmor ? poweredArmor.completion : topUniverse.accuracy}%;--score-color:${escapeHtml(scoreColor(poweredArmor ? poweredArmor.completion : topUniverse.accuracy))}"></span></div>
           </div>
         </div>
         <dl class="feature-dl">
@@ -241,6 +267,7 @@
 
   function renderViewHeader(title, description, extra = "") {
     return `
+      <span id="${escapeHtml(state.view)}" class="view-anchor" aria-hidden="true"></span>
       <div class="view-header">
         <div>
           <p class="eyebrow">Atlas view</p>
@@ -277,19 +304,19 @@
           )
           .join("");
         return `
-          <article class="universe-card" style="--accent:${escapeHtml(colorFor(universe))}">
+          <article class="universe-card" style="--accent:${escapeHtml(scoreColor(universe.accuracy))};--score-color:${escapeHtml(scoreColor(universe.accuracy))}">
             <div class="card-top">
               <div>
-                <p class="eyebrow">${escapeHtml(universe.realism)}</p>
+                <p class="eyebrow">${escapeHtml(universeTier(universe))}</p>
                 <h3 class="card-title">${escapeHtml(universe.name)}</h3>
                 <p class="subtle">${escapeHtml(universe.era)}</p>
               </div>
               <span class="rank-badge">#${index + 1}</span>
             </div>
-            <div class="score-row">
+            <div class="score-row" style="--score-color:${escapeHtml(scoreColor(universe.accuracy))}">
               <strong>${universe.accuracy}</strong>
               <div>
-                <div class="meter" aria-label="Universe realism score ${universe.accuracy}"><span style="--value:${universe.accuracy}%"></span></div>
+                <div class="meter" aria-label="Universe realism score ${universe.accuracy}"><span style="--value:${universe.accuracy}%;--score-color:${escapeHtml(scoreColor(universe.accuracy))}"></span></div>
                 <p class="score-caption">Reality Score</p>
               </div>
             </div>
@@ -310,10 +337,10 @@
     const ladder = universes
       .map(
         (universe) => `
-          <div class="ladder-row" style="--accent:${escapeHtml(colorFor(universe))}">
+          <div class="ladder-row" style="--score-color:${escapeHtml(scoreColor(universe.accuracy))}">
             <span class="ladder-label" title="${escapeHtml(universe.name)}">${escapeHtml(universe.name)}</span>
             <strong>${universe.accuracy}</strong>
-            <div class="ladder-track"><span style="--value:${universe.accuracy}%"></span></div>
+            <div class="ladder-track"><span style="--value:${universe.accuracy}%;--score-color:${escapeHtml(scoreColor(universe.accuracy))}"></span></div>
           </div>
         `
       )
@@ -708,10 +735,10 @@
       tab.addEventListener("click", () => {
         state.view = tab.dataset.view;
         if (window.location.hash.replace("#", "") !== state.view) {
-          window.history.replaceState(null, "", `#${state.view}`);
+          window.history.pushState(null, "", `#${state.view}`);
         }
         render();
-        $("#databaseView")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        requestAnimationFrame(scrollToDatabase);
       });
     });
     window.addEventListener("hashchange", () => {
@@ -719,7 +746,21 @@
       if (validViews.includes(view)) {
         state.view = view;
         render();
+        requestAnimationFrame(scrollToDatabase);
       }
+    });
+
+    $$("a[href^='#']").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const view = link.getAttribute("href")?.replace("#", "");
+        if (validViews.includes(view)) {
+          event.preventDefault();
+          state.view = view;
+          window.history.pushState(null, "", `#${view}`);
+          render();
+          requestAnimationFrame(scrollToDatabase);
+        }
+      });
     });
     const syncSearchInputs = (value) => {
       [$("#searchInput"), $("#navSearchInput")].filter(Boolean).forEach((input) => {
@@ -738,7 +779,7 @@
         state.query = button.dataset.query || '';
         syncSearchInputs(state.query);
         render();
-        $("#databaseView")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        requestAnimationFrame(scrollToDatabase);
       });
     });
     $("#categoryFilter").addEventListener("change", (event) => {
